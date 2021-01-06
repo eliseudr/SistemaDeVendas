@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2021/01/06 07:35:49.000.235,=C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2021/01/06 07:35:58.000.934,C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\WK.dproj</Transaction>
+    <Transaction>2021/01/06 07:36:19.000.893,C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\unDMdados.dfm</Transaction>
+    <Transaction>2021/01/06 07:36:19.000.893,C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\unDMdados.pas</Transaction>
+    <Transaction>2021/01/06 07:45:04.000.493,C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\unDMdados.dfm=C:\Users\GreenAcesso\Desktop\WKDelphi\unDMdados.dfm</Transaction>
+    <Transaction>2021/01/06 07:45:04.000.493,C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\unDMdados.pas=C:\Users\GreenAcesso\Desktop\WKDelphi\unDMdados.pas</Transaction>
+    <Transaction>2021/01/06 07:45:07.000.141,C:\Users\GreenAcesso\Documents\Embarcadero\Studio\Projects\WK.dproj=C:\Users\GreenAcesso\Desktop\WKDelphi\WK.dproj</Transaction>
+    <Transaction>2021/01/06 07:46:37.000.540,C:\Users\GreenAcesso\Desktop\WKDelphi\unDMdados.dfm=C:\Users\GreenAcesso\Desktop\WKDelphi\unDMdados1.dfm</Transaction>
+    <Transaction>2021/01/06 07:46:37.000.540,C:\Users\GreenAcesso\Desktop\WKDelphi\unDMdados.pas=C:\Users\GreenAcesso\Desktop\WKDelphi\unDMdados1.pas</Transaction>
+    <Transaction>2021/01/06 07:46:53.000.413,=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit1.pas</Transaction>
+    <Transaction>2021/01/06 07:47:32.000.738,=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit1.pas</Transaction>
+    <Transaction>2021/01/06 07:48:06.000.196,C:\Users\GreenAcesso\Desktop\WKDelphi\Unit1.dfm=C:\Users\GreenAcesso\Desktop\WKDelphi\unDMdados.dfm</Transaction>
+    <Transaction>2021/01/06 07:48:06.000.196,C:\Users\GreenAcesso\Desktop\WKDelphi\Unit1.pas=C:\Users\GreenAcesso\Desktop\WKDelphi\unDMdados.pas</Transaction>
+    <Transaction>2021/01/06 07:48:18.000.510,C:\Users\GreenAcesso\Desktop\WKDelphi\unDMdados1.pas=</Transaction>
+    <Transaction>2021/01/06 07:49:19.244,=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit1.pas</Transaction>
+    <Transaction>2021/01/06 07:49:54.146,C:\Users\GreenAcesso\Desktop\WKDelphi\unVendas.dfm=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit1.dfm</Transaction>
+    <Transaction>2021/01/06 07:49:54.146,C:\Users\GreenAcesso\Desktop\WKDelphi\unVendas.pas=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit1.pas</Transaction>
+    <Transaction>2021/01/06 09:53:45.938,=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit2.pas</Transaction>
+    <Transaction>2021/01/06 09:54:24.960,C:\Users\GreenAcesso\Desktop\WKDelphi\unInserirVenda.pas=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit2.pas</Transaction>
+    <Transaction>2021/01/06 09:54:24.960,C:\Users\GreenAcesso\Desktop\WKDelphi\unInserirVenda.dfm=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit2.dfm</Transaction>
+    <Transaction>2021/01/06 10:22:06.913,=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit1.pas</Transaction>
+    <Transaction>2021/01/06 10:22:27.461,C:\Users\GreenAcesso\Desktop\WKDelphi\unSQLHelpers.pas=C:\Users\GreenAcesso\Desktop\WKDelphi\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

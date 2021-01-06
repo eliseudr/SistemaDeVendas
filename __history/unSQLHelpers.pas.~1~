@@ -1,0 +1,34 @@
+unit unSQLHelpers;
+
+interface
+
+uses
+  FireDAC.Comp.Client, System.SysUtils, Data.DB, System.Classes, Vcl.DBCtrls,
+  Vcl.Dialogs, Vcl.DBGrids, System.AnsiStrings, FireDAC.Stan.Param,
+  Vcl.Forms, Vcl.Grids, System.DateUtils, Vcl.StdCtrls,
+  System.Variants, Vcl.Mask, Vcl.Controls;
+
+implementation
+
+uses unDMdados;
+
+procedure popularDBGridvVendas(var AFDQuery: TFDQuery;
+  var ADataSource: TDataSource; var ADBGrid: TDBGrid; NomeTable: string);
+begin
+  with AFDQuery do
+  begin
+    Connection := dmDados.FDConnection;
+    Active := False;
+    SQL.Clear;
+
+    SQL.Add('SELECT * FROM ' + NomeTable);
+
+    Open;
+  end;
+
+  AFDQuery.FilterOptions := [foCaseInsensitive];
+  ADataSource.DataSet := AFDQuery;
+  ADBGrid.DataSource := ADataSource;
+end;
+
+end.
