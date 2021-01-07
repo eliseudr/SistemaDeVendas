@@ -52,6 +52,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnFinalizarClick(Sender: TObject);
     procedure AjustarDbgrdVendaAtual(ADBGrid: TDBGrid);
+    procedure edtVlrChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -84,11 +85,6 @@ begin
 
   //Limpar TEMP
   LimparTemp(qryTmpVendaProdutos, dsTmpVendaProdutos, 'temp_venda_produtos');
-
-  //Fechar FORM
-  Action := caFree;
-  Release;
-  FrmInserirVenda := nil;
 end;
 
 procedure TFrmInserirVenda.btnInserirClick(Sender: TObject);
@@ -102,6 +98,12 @@ begin
   SalvarCliente;
 end;
 
+
+procedure TFrmInserirVenda.edtVlrChange(Sender: TObject);
+begin
+ //Calcular total
+ edtVlrTotal.Text := FormatFloat('######,##0.00', (StrToFloat(edtQtd.Text) * StrToFloat(edtVlr.Text)));
+end;
 
 procedure TFrmInserirVenda.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
@@ -174,7 +176,7 @@ var
   ValorTotal: Double;
 begin
   ValorTotal := SomarValorTemp(qryTmpVendaProdutos, dsTmpVendaProdutos, 'temp_venda_produtos');
-  statValorTotal.Panels[0].Text := 'Valor total de venda: ' + FloatToStr(ValorTotal);
+  statValorTotal.Panels[0].Text := 'Valor total de venda: ' + FormatarValorMonetario(ValorTotal);
 end;
 
 procedure TFrmInserirVenda.AjustarDbgrdVendaAtual(ADBGrid: TDBGrid);

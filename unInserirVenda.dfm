@@ -226,10 +226,11 @@ object FrmInserirVenda: TFrmInserirVenda
       Width = 70
       Height = 21
       TabOrder = 4
+      OnChange = edtVlrChange
     end
     object edtVlrTotal: TEdit
       Left = 264
-      Top = 102
+      Top = 104
       Width = 70
       Height = 21
       TabOrder = 5

@@ -3,11 +3,12 @@ unit unSQLHelpers;
 interface
 
 uses
-  FireDAC.Comp.Client, Data.DB, Vcl.DBGrids;
+  FireDAC.Comp.Client, Data.DB, Vcl.DBGrids, System.SysUtils;
 
 function SomarValorTemp(var AFDQuery: TFDQuery; var ADataSource: TDataSource; NomeTable: string): Double;
 function BuscarID(var AFDQuery: TFDQuery; var ADataSource: TDataSource; NomeTable, Nome: string): Integer;
 function BuscarIDVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource): Integer;
+function FormatarValorMonetario(Valor: Double): string;
 
 procedure PopularDBGridTempVendasProdutos(var AFDQuery: TFDQuery; var ADataSource: TDataSource; var ADBGrid: TDBGrid; NomeTable: string);
 procedure popularDBGridVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource; var ADBGrid: TDBGrid; NomeTable: string);
@@ -363,6 +364,11 @@ begin
       CloseQuery(AFDQuery);
     end;
   end;
+end;
+
+function FormatarValorMonetario(Valor: Double): string;
+begin
+  Result := FormatFloat('#,##0.00',Valor);
 end;
 
 end.

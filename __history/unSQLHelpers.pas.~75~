@@ -3,10 +3,11 @@ unit unSQLHelpers;
 interface
 
 uses
-  FireDAC.Comp.Client, Data.DB, Vcl.DBGrids;
+  FireDAC.Comp.Client, Data.DB, Vcl.DBGrids, System.SysUtils;
 
 function SomarValorTemp(var AFDQuery: TFDQuery; var ADataSource: TDataSource; NomeTable: string): Double;
 function BuscarID(var AFDQuery: TFDQuery; var ADataSource: TDataSource; NomeTable, Nome: string): Integer;
+function BuscarIDVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource): Integer;
 
 procedure PopularDBGridTempVendasProdutos(var AFDQuery: TFDQuery; var ADataSource: TDataSource; var ADBGrid: TDBGrid; NomeTable: string);
 procedure popularDBGridVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource; var ADBGrid: TDBGrid; NomeTable: string);
@@ -185,21 +186,10 @@ begin
     Open('SELECT * FROM temp_venda_produtos');
   end;
 
-   qryInserir:= TFDQuery.Create(nil);
-  with qryPesquisar do
-  begin
-    Connection := dmDados.FDConnection;
-    Active := False;
-    SQL.Clear;
-
-    Open('SELECT * FROM venda_produtos');
-  end;
-
   qryInserir := TFDQuery.Create(nil);
   with qryPesquisar do
   begin
     First;
-
     while not Eof do
     begin
       FieldByName('descricao').AsString;
@@ -208,17 +198,12 @@ begin
       FieldByName('id_cliente').AsInteger;
       FieldByName('id_produto').AsInteger;
 
-      Next;
-    end;
-
-    qryInserir := TFDQuery.Create(nil);
-    with qryInserir do
-    begin
-      //Loop para inserir na table Vendas
-      First;
-      while not Eof do
+      qryInserir:= TFDQuery.Create(nil);
+      with qryInserir do
       begin
-
+        Connection := dmDados.FDConnection;
+        Active := False;
+        SQL.Clear;
 
         SQL.Add('INSERT INTO venda_produtos');
         SQL.Add('(descricao,');
@@ -247,6 +232,8 @@ begin
           CloseQuery(qryInserir);
         end;
       end;
+
+      Next;
     end;
   end;
 end;
@@ -357,6 +344,30 @@ begin
       CloseQuery(AFDQuery);
     end;
   end;
+end;
+
+function BuscarIDVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource): Integer;
+begin
+ with AFDQuery do
+  begin
+    Connection := dmDados.FDConnection;
+    Active := False;
+    SQL.Clear;
+
+    SQL.Add('SELECT id FROM vendas');
+
+     try
+      Open;
+      Result := AFDQuery.FieldByName('id').AsInteger;
+    finally
+      CloseQuery(AFDQuery);
+    end;
+  end;
+end;
+
+function FormatarValorMonetario(Valor: Double): string;
+begin
+  Result := FormatFloat('#,##0.00',Valor);
 end;
 
 end.

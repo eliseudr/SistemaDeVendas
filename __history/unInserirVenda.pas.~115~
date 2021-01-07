@@ -41,6 +41,8 @@ type
     qryProdutos: TFDQuery;
     statValorTotal: TStatusBar;
     dbgrdVendaAtual: TDBGrid;
+    qryVendas: TFDQuery;
+    dsVendas: TDataSource;
     procedure btnInserirClick(Sender: TObject);
     procedure SalvarVenda;
     procedure SalvarCliente;
@@ -50,6 +52,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnFinalizarClick(Sender: TObject);
     procedure AjustarDbgrdVendaAtual(ADBGrid: TDBGrid);
+    procedure edtVlrChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -67,20 +70,18 @@ uses unVendas, unSQLHelpers, unDMdados;
 
 procedure TFrmInserirVenda.btnFinalizarClick(Sender: TObject);
 var
-  NomeProduto: string;
-  ValorTotal, ValorUn, Quantidade: Double;
-  IDCliente, IDProduto: Integer;
+  ValorTotal: Double;
+  IDCliente, IDVenda: Integer;
 begin
   ValorTotal    := SomarValorTemp(qryTmpVendaProdutos, dsTmpVendaProdutos, 'temp_venda_produtos');
-  IDCliente     := qryTmpVendaProdutos.FieldByName('id').AsInteger;
-  IDProduto     := qryTmpVendaProdutos.FieldByName('id').AsInteger;
-  NomeProduto   := qryTmpVendaProdutos.FieldByName('descricao').AsString;
+  IDCliente     := qryTmpVendaProdutos.FieldByName('id_cliente').AsInteger;
+  IDVenda       := BuscarIDVendas(qryVendas, dsVendas);
 
   //Gravar dados na table vendas
   InserirVendas(qryTmpVendaProdutos, dsTmpVendaProdutos, ValorTotal, IDCliente);
 
   //Gravar dados na table venda_produtos
-  InserirVendaProdutos(qryTmpVendaProdutos, dsTmpVendaProdutos);
+  InserirVendaProdutos(qryTmpVendaProdutos, dsTmpVendaProdutos, IDVenda);
 
   //Limpar TEMP
   LimparTemp(qryTmpVendaProdutos, dsTmpVendaProdutos, 'temp_venda_produtos');
@@ -98,6 +99,12 @@ begin
 end;
 
 
+procedure TFrmInserirVenda.edtVlrChange(Sender: TObject);
+begin
+ //Calcular total
+ edtVlrTotal.Text := FormatFloat('######,##0.00', (StrToFloat(edtQtd.Text) * StrToFloat(edtVlr.Text)));
+end;
+
 procedure TFrmInserirVenda.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   //Limpar table temp apos fechar janela
@@ -112,6 +119,7 @@ procedure TFrmInserirVenda.FormCreate(Sender: TObject);
 begin
   PopularQry(qryClientes, dsClientes, 'clientes');
   PopularQry(qryProdutos, dsProdutos, 'produtos');
+  PopularQry(qryVendas, dsVendas, 'vendas');
 end;
 
 
@@ -168,7 +176,7 @@ var
   ValorTotal: Double;
 begin
   ValorTotal := SomarValorTemp(qryTmpVendaProdutos, dsTmpVendaProdutos, 'temp_venda_produtos');
-  statValorTotal.Panels[0].Text := 'Valor total de venda: ' + FloatToStr(ValorTotal);
+  statValorTotal.Panels[0].Text := 'Valor total de venda: ' + FloatToStr(FormatFloat('######,##0.00',ValorTotal));
 end;
 
 procedure TFrmInserirVenda.AjustarDbgrdVendaAtual(ADBGrid: TDBGrid);
