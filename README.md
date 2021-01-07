@@ -1,5 +1,6 @@
 # SistemaDeVendas
 Sistema de vendas simplificado feito em Delphi 10.2 Tokyo
+
 Banco utilizado se encontra na pasta junto com os arquivos, *"db_vendas.sql"*.
 
 Exercicio de conhecimento, periodo de 2 dias para ser executado.
