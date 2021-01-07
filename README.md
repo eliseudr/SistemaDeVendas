@@ -6,6 +6,12 @@ Existem diversas melhorias a serem efetuadas mas fiz o possivel dentro do prazo.
 
 Algumas imagens do programa.
 
+Exemplo para o "Cadastro" de cliente
+
 ![](Imagens/Screenshot_24.png)
+
+
 ![](Imagens/Screenshot_26.png)
+
+
 ![](Imagens/Screenshot_27.png)
