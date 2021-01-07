@@ -117,7 +117,6 @@ object FrmInserirVenda: TFrmInserirVenda
     Color = clWindow
     ParentBackground = False
     TabOrder = 1
-    ExplicitHeight = 164
     object lblProdutos: TLabel
       Left = 24
       Top = 16
@@ -186,18 +185,24 @@ object FrmInserirVenda: TFrmInserirVenda
     object btnInserir: TButton
       Left = 24
       Top = 129
-      Width = 95
+      Width = 100
       Height = 25
       Caption = 'Inserir Produto'
       TabOrder = 0
       OnClick = btnInserirClick
     end
     object btnFinalizar: TButton
-      Left = 544
+      Left = 528
       Top = 129
-      Width = 95
+      Width = 100
       Height = 25
       Caption = 'GRAVAR PEDIDO'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
       TabOrder = 1
       OnClick = btnFinalizarClick
     end
@@ -279,5 +284,14 @@ object FrmInserirVenda: TFrmInserirVenda
   object qryProdutos: TFDQuery
     Left = 560
     Top = 201
+  end
+  object qryVendas: TFDQuery
+    Left = 560
+    Top = 328
+  end
+  object dsVendas: TDataSource
+    DataSet = qryVendas
+    Left = 504
+    Top = 328
   end
 end

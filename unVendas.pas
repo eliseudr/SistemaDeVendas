@@ -16,13 +16,15 @@ type
     pnlBackground: TPanel;
     pnlToolBar: TPanel;
     dbgrdVendas: TDBGrid;
-    dsVendaProdutos: TDataSource;
-    qryVendaProdutos: TFDQuery;
+    dsVendas: TDataSource;
+    qryVendas: TFDQuery;
     tlbBotoes: TToolBar;
     btnInseriVenda: TToolButton;
     imageList: TImageList;
+    btnAtualizar: TToolButton;
     procedure btnInseriVendaClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btnAtualizarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,6 +40,11 @@ implementation
 
 uses unInserirVenda, unSQLHelpers;
 
+procedure TFrmVendas.btnAtualizarClick(Sender: TObject);
+begin
+  qryVendas.Refresh;
+end;
+
 procedure TFrmVendas.btnInseriVendaClick(Sender: TObject);
 begin
   FrmInserirVenda := TFrmInserirVenda.Create(Application);
@@ -46,7 +53,7 @@ end;
 
 procedure TFrmVendas.FormCreate(Sender: TObject);
 begin
-  popularDBGridVendas(qryVendaProdutos, dsVendaProdutos, dbgrdVendas, 'venda_produtos');
+  popularDBGridVendas(qryVendas, dsVendas, dbgrdVendas, 'vendas');
 end;
 
 end.

@@ -41,6 +41,8 @@ type
     qryProdutos: TFDQuery;
     statValorTotal: TStatusBar;
     dbgrdVendaAtual: TDBGrid;
+    qryVendas: TFDQuery;
+    dsVendas: TDataSource;
     procedure btnInserirClick(Sender: TObject);
     procedure SalvarVenda;
     procedure SalvarCliente;
@@ -66,11 +68,27 @@ implementation
 uses unVendas, unSQLHelpers, unDMdados;
 
 procedure TFrmInserirVenda.btnFinalizarClick(Sender: TObject);
+var
+  ValorTotal: Double;
+  IDCliente, IDVenda: Integer;
 begin
+  ValorTotal    := SomarValorTemp(qryTmpVendaProdutos, dsTmpVendaProdutos, 'temp_venda_produtos');
+  IDCliente     := qryTmpVendaProdutos.FieldByName('id_cliente').AsInteger;
+  IDVenda       := BuscarIDVendas(qryVendas, dsVendas);
+
+  //Gravar dados na table vendas
+  InserirVendas(qryTmpVendaProdutos, dsTmpVendaProdutos, ValorTotal, IDCliente);
+
   //Gravar dados na table venda_produtos
+  InserirVendaProdutos(qryTmpVendaProdutos, dsTmpVendaProdutos, IDVenda);
 
   //Limpar TEMP
   LimparTemp(qryTmpVendaProdutos, dsTmpVendaProdutos, 'temp_venda_produtos');
+
+  //Fechar FORM
+  Action := caFree;
+  Release;
+  FrmInserirVenda := nil;
 end;
 
 procedure TFrmInserirVenda.btnInserirClick(Sender: TObject);
@@ -99,6 +117,7 @@ procedure TFrmInserirVenda.FormCreate(Sender: TObject);
 begin
   PopularQry(qryClientes, dsClientes, 'clientes');
   PopularQry(qryProdutos, dsProdutos, 'produtos');
+  PopularQry(qryVendas, dsVendas, 'vendas');
 end;
 
 
@@ -117,6 +136,7 @@ begin
 
     //SQL
     InserirCliente(NomeCliente, CidadeCliente, UFCliente);
+    ShowMessage('Cliente inserido com sucesso');
 end;
 
 procedure TFrmInserirVenda.SalvarVenda;
@@ -134,8 +154,9 @@ begin
   Quantidade    := StrToFloat(edtQtd.Text);
   ValorUn       := StrToFloat(edtVlr.Text);
   ValorTotal    := (ValorUn*Quantidade);
-  IDCliente     := qryClientes.FieldByName('id').AsInteger;
-  IDProduto     := qryProdutos.FieldByName('id').AsInteger;
+  //Filtro para buscar ID nas respectivas tables
+  IDCliente     := BuscarID(qryClientes, dsClientes, 'clientes', edtNome.Text);
+  IDProduto     := BuscarID(qryProdutos, dsProdutos, 'produtos', edtDescricaoProduto.Text);
 
   //SQL
   //Como o sistema nao tera cadastro, assim ja sera criado o registro na table

@@ -6,12 +6,16 @@ uses
   FireDAC.Comp.Client, Data.DB, Vcl.DBGrids;
 
 function SomarValorTemp(var AFDQuery: TFDQuery; var ADataSource: TDataSource; NomeTable: string): Double;
+function BuscarID(var AFDQuery: TFDQuery; var ADataSource: TDataSource; NomeTable, Nome: string): Integer;
+function BuscarIDVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource): Integer;
 
 procedure PopularDBGridTempVendasProdutos(var AFDQuery: TFDQuery; var ADataSource: TDataSource; var ADBGrid: TDBGrid; NomeTable: string);
 procedure popularDBGridVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource; var ADBGrid: TDBGrid; NomeTable: string);
 procedure InserirCliente(NomeCliente, CidadeCliente, UFCliente: string);
 procedure InserirProduto(NomeProduto: string; ValorUn: Double);
+procedure InserirVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource; ValorTotal: Double; IDCliente: Integer);
 procedure InserirTempVendaProdutos(NomeProduto: string; ValorUn, ValorTotal: Double;IDCliente, IDProduto: Integer);
+procedure InserirVendaProdutos(var AFDQuery: TFDQuery; var ADataSource: TDataSource; IDVenda: Integer);
 procedure CloseQuery(AQuery: TFDQuery);
 procedure LimparTemp(var AFDQuery: TFDQuery; var ADataSource: TDataSource; NomeTable: string);
 procedure PopularQry(var AFDQuery: TFDQuery; var ADataSource: TDataSource; NomeTable: string);
@@ -122,9 +126,9 @@ begin
     SQL.Clear;
 
     SQL.Add('INSERT INTO produtos');
-    SQL.Add('(descricao,');
+    SQL.Add('(nome,');
     SQL.Add(' preco_venda) ');
-    SQL.Add('VALUES (:descricao, ');
+    SQL.Add('VALUES (:nome, ');
     SQL.Add(':preco_venda)');
 
     Params[0].AsString := NomeProduto;
@@ -134,6 +138,102 @@ begin
       ExecSQL;
     finally
       CloseQuery(qryInserir);
+    end;
+  end;
+end;
+
+procedure InserirVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource;
+  ValorTotal: Double; IDCliente: Integer);
+var
+  qryInserir: TFDQuery;
+begin
+  qryInserir := TFDQuery.Create(nil);
+  with qryInserir do
+  begin
+    Connection := dmDados.FDConnection;
+    Active := False;
+    SQL.Clear;
+
+    SQL.Add('INSERT INTO vendas ');
+    SQL.Add('(valor_total,');
+    SQL.Add(' id_cliente)');
+    SQL.Add('VALUES (:valor_total, ');
+    SQL.Add(':id_cliente)');
+
+    Params[0].AsFloat := ValorTotal;
+    Params[1].AsInteger := IDCliente;
+
+    try
+      ExecSQL;
+    finally
+      CloseQuery(qryInserir);
+    end;
+  end;
+end;
+
+{Insere um novo os produtos da venda na table definitiva `venda_produtos`.}
+procedure InserirVendaProdutos(var AFDQuery: TFDQuery; var ADataSource: TDataSource; IDVenda: Integer);
+var
+  qryInserir, qryPesquisar: TFDQuery;
+begin
+  qryPesquisar := TFDQuery.Create(nil);
+  with qryPesquisar do
+  begin
+    Connection := dmDados.FDConnection;
+    Active := False;
+    SQL.Clear;
+
+    Open('SELECT * FROM temp_venda_produtos');
+  end;
+
+  qryInserir := TFDQuery.Create(nil);
+  with qryPesquisar do
+  begin
+    First;
+    while not Eof do
+    begin
+      FieldByName('descricao').AsString;
+      FieldByName('valor_unidade').AsFloat;
+      FieldByName('valor_total').AsFloat;
+      FieldByName('id_cliente').AsInteger;
+      FieldByName('id_produto').AsInteger;
+
+      qryInserir:= TFDQuery.Create(nil);
+      with qryInserir do
+      begin
+        Connection := dmDados.FDConnection;
+        Active := False;
+        SQL.Clear;
+
+        SQL.Add('INSERT INTO venda_produtos');
+        SQL.Add('(descricao,');
+        SQL.Add(' valor_unidade, ');
+        SQL.Add(' valor_total, ');
+        SQL.Add(' id_cliente, ');
+        SQL.Add(' id_produto, ');
+        SQL.Add(' id_venda) ');
+        SQL.Add('VALUES (:descricao, ');
+        SQL.Add(':valor_unidade,');
+        SQL.Add(':valor_total,');
+        SQL.Add(':id_cliente,');
+        SQL.Add(':id_produto,');
+        SQL.Add(':id_venda)');
+
+        Params[0].AsString := qryPesquisar.FieldByName('descricao').AsString;
+        Params[1].AsFloat := qryPesquisar.FieldByName('valor_unidade').AsFloat;
+        Params[2].AsFloat := qryPesquisar.FieldByName('valor_total').AsFloat;
+        Params[3].AsInteger := qryPesquisar.FieldByName('id_cliente').AsInteger;
+        Params[4].AsInteger := qryPesquisar.FieldByName('id_produto').AsInteger;
+        Params[5].AsInteger := IDVenda;
+
+        try
+          ExecSQL;
+        finally
+          CloseQuery(qryInserir);
+        end;
+      end;
+
+      Next;
     end;
   end;
 end;
@@ -223,6 +323,44 @@ begin
       Result := qrySoma.FieldByName('valor_total').AsFloat;
     finally
       CloseQuery(qrySoma);
+    end;
+  end;
+end;
+
+function BuscarID(var AFDQuery: TFDQuery; var ADataSource: TDataSource; NomeTable, Nome: string): Integer;
+begin
+ with AFDQuery do
+  begin
+    Connection := dmDados.FDConnection;
+    Active := False;
+    SQL.Clear;
+
+    SQL.Add('SELECT id FROM ' + NomeTable + ' WHERE nome = "' + Nome + '"');
+
+     try
+      Open;
+      Result := AFDQuery.FieldByName('id').AsInteger;
+    finally
+      CloseQuery(AFDQuery);
+    end;
+  end;
+end;
+
+function BuscarIDVendas(var AFDQuery: TFDQuery; var ADataSource: TDataSource): Integer;
+begin
+ with AFDQuery do
+  begin
+    Connection := dmDados.FDConnection;
+    Active := False;
+    SQL.Clear;
+
+    SQL.Add('SELECT id FROM vendas');
+
+     try
+      Open;
+      Result := AFDQuery.FieldByName('id').AsInteger;
+    finally
+      CloseQuery(AFDQuery);
     end;
   end;
 end;
