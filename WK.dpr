@@ -15,6 +15,5 @@ begin
   Application.Title := 'Sistema de venda';
   Application.CreateForm(TdmDados, dmDados);
   Application.CreateForm(TFrmVendas, FrmVendas);
-  Application.CreateForm(TFrmInserirVenda, FrmInserirVenda);
   Application.Run;
 end.
